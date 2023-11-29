@@ -26,4 +26,44 @@ public class MedicalDocumentService {
 
         return medicalDocuments;
     }
+
+    public MedicalDocument getMedicalDocumentById(Long id) {
+        return medicalDocumentRepository.findById(id).orElse(null);
+    }
+
+    public MedicalDocument createMedicalDocument(MedicalDocument medicalDocument) {
+        return medicalDocumentRepository.save(medicalDocument);
+    }
+
+/*    public MedicalDocument updateMedicalDocument(Long id, MedicalDocument updatedDocument) {
+        if (medicalDocumentRepository.existsById(id)) {
+            updatedDocument.setId(id);
+            return medicalDocumentRepository.save(updatedDocument);
+        } else {
+            return null;
+        }
+    }*/
+
+    public MedicalDocument updateMedicalDocument(Long id, MedicalDocument updatedDocument) {
+        return medicalDocumentRepository.findById(id)
+                .map(existingDocument -> {
+                    existingDocument.setDocumentName(updatedDocument.getDocumentName());
+                    existingDocument.setDocumentDescription(updatedDocument.getDocumentDescription());
+                    existingDocument.setDocumentContent(updatedDocument.getDocumentContent());
+                    existingDocument.setDocumentDate(updatedDocument.getDocumentDate());
+                    existingDocument.setFile(updatedDocument.getFile());
+
+                    return medicalDocumentRepository.save(existingDocument);
+                })
+                .orElse(null);
+    }
+
+    public boolean deleteMedicalDocument(Long id) {
+        if (medicalDocumentRepository.existsById(id)) {
+            medicalDocumentRepository.deleteById(id);
+            return true;
+        } else {
+            return false;
+        }
+    }
 }

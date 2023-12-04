@@ -35,15 +35,6 @@ public class MedicalDocumentService {
         return medicalDocumentRepository.save(medicalDocument);
     }
 
-/*    public MedicalDocument updateMedicalDocument(Long id, MedicalDocument updatedDocument) {
-        if (medicalDocumentRepository.existsById(id)) {
-            updatedDocument.setId(id);
-            return medicalDocumentRepository.save(updatedDocument);
-        } else {
-            return null;
-        }
-    }*/
-
     public MedicalDocument updateMedicalDocument(Long id, MedicalDocument updatedDocument) {
         return medicalDocumentRepository.findById(id)
                 .map(existingDocument -> {

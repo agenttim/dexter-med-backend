@@ -1,12 +1,16 @@
 package ru.dextermed.dextermedbackend.service;
 
+import com.fasterxml.jackson.databind.JsonMappingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import ru.dextermed.dextermedbackend.model.MedicalDocument;
 import ru.dextermed.dextermedbackend.repository.MedicalDocumentRepository;
 
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
+import java.util.Map;
 
 @Service
 public class MedicalDocumentService {
@@ -55,6 +59,29 @@ public class MedicalDocumentService {
             return true;
         } else {
             return false;
+        }
+    }
+
+    public MedicalDocument patchMedicalDocument(Long id, Map<String, Object> updates) {
+        MedicalDocument existingDocument = getMedicalDocumentById(id);
+
+        if (existingDocument != null) {
+            // Применяем обновления к существующему документу
+            // Например, можно использовать библиотеку ModelMapper для копирования полей
+            // или обновлять поля вручную
+
+            // Пример с использованием Jackson ObjectMapper:
+            ObjectMapper objectMapper = new ObjectMapper();
+            try {
+                objectMapper.updateValue(existingDocument, updates);
+            } catch (JsonMappingException e) {
+                throw new RuntimeException(e);
+            }
+
+            // Сохраняем обновленный документ в базе данных
+            return medicalDocumentRepository.save(existingDocument);
+        } else {
+            return null;
         }
     }
 }

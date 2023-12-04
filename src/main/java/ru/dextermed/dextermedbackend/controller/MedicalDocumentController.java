@@ -8,6 +8,7 @@ import ru.dextermed.dextermedbackend.model.MedicalDocument;
 import ru.dextermed.dextermedbackend.service.MedicalDocumentService;
 
 import java.util.List;
+import java.util.Map;
 
 @RestController
 @RequestMapping("/api/medical-documents")
@@ -60,6 +61,19 @@ public class MedicalDocumentController {
         boolean deleted = medicalDocumentService.deleteMedicalDocument(id);
         if (deleted) {
             return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+        } else {
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        }
+    }
+
+    @PatchMapping("/{id}")
+    public ResponseEntity<MedicalDocument> patchMedicalDocument(
+            @PathVariable Long id,
+            @RequestBody Map<String, Object> updates
+    ) {
+        MedicalDocument patchedDocument = medicalDocumentService.patchMedicalDocument(id, updates);
+        if (patchedDocument != null) {
+            return new ResponseEntity<>(patchedDocument, HttpStatus.OK);
         } else {
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         }

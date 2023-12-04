@@ -13,6 +13,8 @@ public class MedicalDocument {
     @Id
     private Long id;
 
+    private Long userId;
+
     private String documentName;
     private String documentDescription;
     private String documentContent;
@@ -20,8 +22,9 @@ public class MedicalDocument {
     private String file;
 
     @PersistenceCreator
-    public MedicalDocument(Long id, String documentName, String documentDescription, String documentContent, Date documentDate, String file) {
+    public MedicalDocument(Long id, Long userId, String documentName, String documentDescription, String documentContent, Date documentDate, String file) {
         this.id = id;
+        this.userId = userId;
         this.documentName = documentName;
         this.documentDescription = documentDescription;
         this.documentContent = documentContent;
@@ -71,5 +74,13 @@ public class MedicalDocument {
 
     public void setFile(String file) {
         this.file = file;
+    }
+
+    public Long getUserId() {
+        return userId;
+    }
+
+    public void setUserId(Long userId) {
+        this.userId = userId;
     }
 }

@@ -6,7 +6,7 @@ import org.springframework.data.relational.core.mapping.Table;
 import java.util.Set;
 
 @Table("app_user")
-public class User {
+public class UserEntity {
 
     @Id
     private Long id;
@@ -17,15 +17,20 @@ public class User {
     // Добавляем поле для хранения ролей пользователя
     private Set<Role> roles;
 
-    public User() {
+    public UserEntity() {
         // Пустой конструктор для работы с JPA
     }
 
-    public User(Long id, String username, String password, Set<Role> roles) {
+    public UserEntity(Long id, String username, String password, Set<Role> roles) {
         this.id = id;
         this.username = username;
         this.password = password;
         this.roles = roles;
+    }
+
+    public UserEntity(String username, String password) {
+        this.username = username;
+        this.password = password;
     }
 
     // Геттеры и сеттеры для всех полей

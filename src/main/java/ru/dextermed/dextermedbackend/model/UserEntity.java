@@ -12,10 +12,10 @@ public class UserEntity {
     private Long id;
 
     private String username;
+
     private String password;
 
-    // Добавляем поле для хранения ролей пользователя
-    private Set<Role> roles;
+    //private Set<Role> roles;
 
     public UserEntity() {
         // Пустой конструктор для работы с JPA
@@ -25,7 +25,7 @@ public class UserEntity {
         this.id = id;
         this.username = username;
         this.password = password;
-        this.roles = roles;
+        //this.roles = roles;
     }
 
     public UserEntity(String username, String password) {
@@ -55,11 +55,21 @@ public class UserEntity {
         this.password = password;
     }
 
-    public Set<Role> getRoles() {
+/*    public Set<Role> getRoles() {
         return roles;
     }
 
     public void setRoles(Set<Role> roles) {
         this.roles = roles;
+    }*/
+
+    @Override
+    public String toString() {
+        return "UserEntity{" +
+                "id=" + id +
+                ", username='" + username + '\'' +
+                ", password='" + password + '\'' +
+                /*", roles=" + roles +*/
+                '}';
     }
 }

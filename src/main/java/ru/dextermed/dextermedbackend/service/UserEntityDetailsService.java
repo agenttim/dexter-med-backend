@@ -1,6 +1,8 @@
 package ru.dextermed.dextermedbackend.service;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
+import org.springframework.security.core.userdetails.User;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
@@ -11,6 +13,7 @@ import ru.dextermed.dextermedbackend.repository.UserEntityRepository;
 import ru.dextermed.dextermedbackend.security.UserEntityDetails;
 
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 @Service
 public class UserEntityDetailsService implements UserDetailsService {
@@ -29,13 +32,14 @@ public class UserEntityDetailsService implements UserDetailsService {
     @Override
     @Transactional
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
-        Optional<UserEntity> userEntity = userEntityRepository.findByUsername(username);
+        UserEntity userEntity = findByUserName(username).orElseThrow(() -> new UsernameNotFoundException(
+                String.format("Пользователь '%s' не найден", username)
+        ));
 
-        if (userEntity.isEmpty())
-            throw new UsernameNotFoundException("User not found!");
-
-        return new UserEntityDetails(userEntity.get());
+        return new User(
+                userEntity.getUsername(),
+                userEntity.getPassword(),
+                userEntity.getRoles().stream().map(role -> new SimpleGrantedAuthority(role.getName())).collect(Collectors.toList())
+        );
     }
-
-
 }

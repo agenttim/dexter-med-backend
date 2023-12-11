@@ -15,7 +15,7 @@ public class UserEntity {
 
     private String password;
 
-    //private Set<Role> roles;
+    private Set<Role> roles;
 
     public UserEntity() {
         // Пустой конструктор для работы с JPA
@@ -55,13 +55,13 @@ public class UserEntity {
         this.password = password;
     }
 
-/*    public Set<Role> getRoles() {
+    public Set<Role> getRoles() {
         return roles;
     }
 
     public void setRoles(Set<Role> roles) {
         this.roles = roles;
-    }*/
+    }
 
     @Override
     public String toString() {
@@ -69,7 +69,7 @@ public class UserEntity {
                 "id=" + id +
                 ", username='" + username + '\'' +
                 ", password='" + password + '\'' +
-                /*", roles=" + roles +*/
+                ", roles=" + roles +
                 '}';
     }
 }

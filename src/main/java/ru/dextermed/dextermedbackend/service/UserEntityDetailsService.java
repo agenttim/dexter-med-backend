@@ -9,8 +9,8 @@ import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import ru.dextermed.dextermedbackend.model.UserEntity;
+import ru.dextermed.dextermedbackend.repository.RoleRepository;
 import ru.dextermed.dextermedbackend.repository.UserEntityRepository;
-import ru.dextermed.dextermedbackend.security.UserEntityDetails;
 
 import java.util.Optional;
 import java.util.stream.Collectors;
@@ -19,10 +19,12 @@ import java.util.stream.Collectors;
 public class UserEntityDetailsService implements UserDetailsService {
 
     private final UserEntityRepository userEntityRepository;
+    private final RoleRepository roleRepository;
 
     @Autowired
-    public UserEntityDetailsService(UserEntityRepository userEntityRepository) {
+    public UserEntityDetailsService(UserEntityRepository userEntityRepository, RoleRepository roleRepository) {
         this.userEntityRepository = userEntityRepository;
+        this.roleRepository = roleRepository;
     }
 
     public Optional<UserEntity> findByUserName(String username) {

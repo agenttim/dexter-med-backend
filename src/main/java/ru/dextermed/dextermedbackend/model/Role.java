@@ -1,26 +1,26 @@
 package ru.dextermed.dextermedbackend.model;
 
 import org.springframework.data.annotation.Id;
+import org.springframework.data.relational.core.mapping.Column;
 import org.springframework.data.relational.core.mapping.Table;
 
 @Table("app_role")
 public class Role {
 
     @Id
+    @Column("id")
     private Long id;
 
+    @Column("name")
     private String name;
 
     public Role() {
-        // Пустой конструктор для работы с JPA
     }
 
     public Role(Long id, String name) {
         this.id = id;
         this.name = name;
     }
-
-    // Геттеры и сеттеры для всех полей
 
     public Long getId() {
         return id;

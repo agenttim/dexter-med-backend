@@ -1,6 +1,10 @@
 package ru.dextermed.dextermedbackend.model;
 
+import jakarta.persistence.JoinColumn;
+import jakarta.persistence.JoinTable;
+import jakarta.persistence.ManyToMany;
 import org.springframework.data.annotation.Id;
+import org.springframework.data.relational.core.mapping.Column;
 import org.springframework.data.relational.core.mapping.Table;
 
 import java.util.Set;
@@ -9,23 +13,30 @@ import java.util.Set;
 public class UserEntity {
 
     @Id
+    @Column("id")
     private Long id;
 
+    @Column("username")
     private String username;
 
+    @Column("password")
     private String password;
 
+    @ManyToMany
+    @JoinTable(
+            name = "user_role",
+            joinColumns = @JoinColumn(name = "user_id"),
+            inverseJoinColumns = @JoinColumn(name = "role_id"))
     private Set<Role> roles;
 
     public UserEntity() {
-        // Пустой конструктор для работы с JPA
     }
 
     public UserEntity(Long id, String username, String password, Set<Role> roles) {
         this.id = id;
         this.username = username;
         this.password = password;
-        //this.roles = roles;
+        this.roles = roles;
     }
 
     public UserEntity(String username, String password) {
@@ -33,7 +44,6 @@ public class UserEntity {
         this.password = password;
     }
 
-    // Геттеры и сеттеры для всех полей
 
     public Long getId() {
         return id;

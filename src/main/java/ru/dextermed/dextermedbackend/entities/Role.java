@@ -1,4 +1,4 @@
-package ru.dextermed.dextermedbackend.model;
+package ru.dextermed.dextermedbackend.entities;
 
 import org.springframework.data.annotation.Id;
 import org.springframework.data.relational.core.mapping.Column;

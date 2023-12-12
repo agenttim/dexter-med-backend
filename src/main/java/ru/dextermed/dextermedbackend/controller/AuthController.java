@@ -6,6 +6,8 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 import ru.dextermed.dextermedbackend.dtos.JwtRequest;
+import ru.dextermed.dextermedbackend.dtos.RegistrationUserDto;
+import ru.dextermed.dextermedbackend.service.AuthService;
 
 @RestController
 @RequiredArgsConstructor

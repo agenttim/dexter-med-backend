@@ -3,24 +3,23 @@ package ru.dextermed.dextermedbackend.security;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
-import ru.dextermed.dextermedbackend.model.UserEntity;
+import ru.dextermed.dextermedbackend.entities.User;
 
 import java.util.Collection;
-import java.util.Collections;
 import java.util.Set;
 import java.util.stream.Collectors;
 
 public class UserEntityDetails implements UserDetails {
 
-    private final UserEntity userEntity;
+    private final User user;
 
-    public UserEntityDetails(UserEntity userEntity) {
-        this.userEntity = userEntity;
+    public UserEntityDetails(User user) {
+        this.user = user;
     }
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
-        Set<String> roles = userEntity.getRoles().stream()
+        Set<String> roles = user.getRoles().stream()
                 .map(role -> "ROLE_" + role.getName()) // Предположим, что у тебя есть метод getName() в классе Role
                 .collect(Collectors.toSet());
 
@@ -32,12 +31,12 @@ public class UserEntityDetails implements UserDetails {
 
     @Override
     public String getPassword() {
-        return this.userEntity.getPassword();
+        return this.user.getPassword();
     }
 
     @Override
     public String getUsername() {
-        return this.userEntity.getUsername();
+        return this.user.getUsername();
     }
 
     @Override
@@ -60,7 +59,7 @@ public class UserEntityDetails implements UserDetails {
         return true;
     }
 
-    public UserEntity getUserEntity() {
-        return this.userEntity;
+    public User getUserEntity() {
+        return this.user;
     }
 }

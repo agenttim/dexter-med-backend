@@ -4,11 +4,10 @@ import com.fasterxml.jackson.databind.JsonMappingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import ru.dextermed.dextermedbackend.model.MedicalDocument;
+import ru.dextermed.dextermedbackend.entities.MedicalDocument;
 import ru.dextermed.dextermedbackend.repository.MedicalDocumentRepository;
 
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
 import java.util.Map;
 

@@ -11,13 +11,12 @@ import org.springframework.security.config.annotation.web.configuration.EnableWe
 import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.HttpStatusEntryPoint;
-import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
-import ru.dextermed.dextermedbackend.service.UserEntityDetailsService;
+import ru.dextermed.dextermedbackend.service.UserService;
 
 @EnableWebSecurity
 public class SecurityConfig {
 
-    private final UserEntityDetailsService userEntityDetailsService;
+    private final UserService userService;
 
     @Bean
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
@@ -39,14 +38,14 @@ public class SecurityConfig {
     }
 
     @Autowired
-    public SecurityConfig(UserEntityDetailsService userEntityDetailsService) {
-        this.userEntityDetailsService = userEntityDetailsService;
+    public SecurityConfig(UserService userService) {
+        this.userService = userService;
     }
 
     @Bean
     public DaoAuthenticationProvider daoAuthenticationProvider() {
         DaoAuthenticationProvider daoAuthenticationProvider = new DaoAuthenticationProvider();
-        daoAuthenticationProvider.setUserDetailsService(userEntityDetailsService);
+        daoAuthenticationProvider.setUserDetailsService(userService);
 
         return daoAuthenticationProvider;
     }

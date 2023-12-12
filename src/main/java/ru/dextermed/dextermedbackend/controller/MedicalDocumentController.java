@@ -4,7 +4,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-import ru.dextermed.dextermedbackend.model.MedicalDocument;
+import ru.dextermed.dextermedbackend.entities.MedicalDocument;
 import ru.dextermed.dextermedbackend.service.MedicalDocumentService;
 
 import java.util.List;

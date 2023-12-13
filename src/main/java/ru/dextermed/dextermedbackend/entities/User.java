@@ -1,12 +1,12 @@
 package ru.dextermed.dextermedbackend.entities;
 
-import jakarta.persistence.*;
 import lombok.Data;
 
-
+import javax.persistence.*;
 import java.util.Collection;
-import java.util.Set;
 
+
+@Entity
 @Data
 @Table(name = "app_user")
 public class User {
@@ -27,7 +27,7 @@ public class User {
 
     @ManyToMany
     @JoinTable(
-            name = "user_role",
+            name = "users_roles",
             joinColumns = @JoinColumn(name = "user_id"),
             inverseJoinColumns = @JoinColumn(name = "role_id"))
     private Collection<Role> roles;

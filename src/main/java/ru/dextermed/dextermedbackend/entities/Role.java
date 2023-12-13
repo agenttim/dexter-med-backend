@@ -1,17 +1,21 @@
 package ru.dextermed.dextermedbackend.entities;
 
-import org.springframework.data.annotation.Id;
-import org.springframework.data.relational.core.mapping.Column;
-import org.springframework.data.relational.core.mapping.Table;
 
-@Table("app_role")
+import lombok.Data;
+
+import javax.persistence.*;
+
+@Entity
+@Data
+@Table(name = "app_role")
 public class Role {
 
     @Id
-    @Column("id")
+    @Column(name = "id")
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Column("name")
+    @Column(name = "name")
     private String name;
 
     public Role() {

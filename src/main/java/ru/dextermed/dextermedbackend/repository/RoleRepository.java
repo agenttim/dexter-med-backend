@@ -1,14 +1,12 @@
 package ru.dextermed.dextermedbackend.repository;
 
-import org.springframework.data.jdbc.repository.query.Query;
 import org.springframework.data.repository.CrudRepository;
-import org.springframework.data.repository.query.Param;
+import org.springframework.stereotype.Repository;
 import ru.dextermed.dextermedbackend.entities.Role;
 
 import java.util.Optional;
 
-public interface RoleRepository extends CrudRepository<Role, Long> {
-
-    @Query("SELECT * FROM app_role WHERE name = :name") // Обрати внимание на изменение здесь
-    Optional<Role> findByName(@Param("name") String name);
+@Repository
+public interface RoleRepository extends CrudRepository<Role, Integer> {
+    Optional<Role> findByName(String name);
 }

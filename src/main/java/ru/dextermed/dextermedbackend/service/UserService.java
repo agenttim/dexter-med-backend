@@ -11,13 +11,13 @@ import org.springframework.transaction.annotation.Transactional;
 import ru.dextermed.dextermedbackend.dtos.RegistrationUserDto;
 import ru.dextermed.dextermedbackend.entities.User;
 import ru.dextermed.dextermedbackend.repository.UserRepository;
-import ru.dextermed.dextermedbackend.service.RoleService;
 
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
 
 @Service
+
 public class UserService implements UserDetailsService {
     private UserRepository userRepository;
     private RoleService roleService;

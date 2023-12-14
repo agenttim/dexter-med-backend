@@ -4,12 +4,14 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import ru.dextermed.dextermedbackend.dtos.JwtRequest;
 import ru.dextermed.dextermedbackend.dtos.RegistrationUserDto;
 import ru.dextermed.dextermedbackend.service.AuthService;
 
 @RestController
+@RequestMapping("/api/profile")
 @RequiredArgsConstructor
 public class AuthController {
     private final AuthService authService;

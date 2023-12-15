@@ -5,20 +5,26 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import ru.dextermed.dextermedbackend.entities.MedicalDocument;
+import ru.dextermed.dextermedbackend.entities.User;
 import ru.dextermed.dextermedbackend.repository.MedicalDocumentRepository;
+import ru.dextermed.dextermedbackend.repository.UserRepository;
 
+import java.security.Principal;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
+import java.util.Optional;
 
 @Service
 public class MedicalDocumentService {
 
     private final MedicalDocumentRepository medicalDocumentRepository;
+    private final UserRepository userRepository;
 
     @Autowired
-    public MedicalDocumentService(MedicalDocumentRepository medicalDocumentRepository) {
+    public MedicalDocumentService(MedicalDocumentRepository medicalDocumentRepository, UserRepository userRepository) {
         this.medicalDocumentRepository = medicalDocumentRepository;
+        this.userRepository = userRepository;
     }
 
     public List<MedicalDocument> getAllMedicalDocuments() {
@@ -81,6 +87,27 @@ public class MedicalDocumentService {
             return medicalDocumentRepository.save(existingDocument);
         } else {
             return null;
+        }
+    }
+
+    public List<MedicalDocument> getMedicalDocumentsByUser(Principal principal) {
+        // Получение имени пользователя из аутентификации
+        String username = principal.getName();
+
+        // Получение пользователя по имени пользователя
+        Optional<User> userOptional = userRepository.findByUsername(username);
+
+        if (userOptional.isPresent()) {
+            User user = userOptional.get();
+
+            // Реализация метода для фильтрации по идентификатору пользователя
+            List<MedicalDocument> userMedicalDocuments = medicalDocumentRepository.findByUserId(user.getId());
+
+            // Верните список документов пользователя
+            return userMedicalDocuments;
+        } else {
+            // Если пользователя не найдено, вернуть пустой список или обработать ошибку
+            return List.of(); // или можно бросить исключение
         }
     }
 }

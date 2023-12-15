@@ -7,6 +7,7 @@ import org.springframework.web.bind.annotation.*;
 import ru.dextermed.dextermedbackend.entities.MedicalDocument;
 import ru.dextermed.dextermedbackend.service.MedicalDocumentService;
 
+import java.security.Principal;
 import java.util.List;
 import java.util.Map;
 
@@ -78,4 +79,11 @@ public class MedicalDocumentController {
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         }
     }
+
+    @GetMapping("/byUser")
+    public ResponseEntity<List<MedicalDocument>> getMedicalDocumentsByUser(Principal principal) {
+        List<MedicalDocument> userMedicalDocuments = medicalDocumentService.getMedicalDocumentsByUser(principal);
+        return new ResponseEntity<>(userMedicalDocuments, HttpStatus.OK);
+    }
+
 }

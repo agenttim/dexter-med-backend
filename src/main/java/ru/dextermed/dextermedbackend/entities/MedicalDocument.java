@@ -3,7 +3,6 @@ package ru.dextermed.dextermedbackend.entities;
 
 import lombok.Data;
 import org.springframework.data.annotation.Id;
-import org.springframework.data.annotation.PersistenceCreator;
 
 import javax.persistence.*;
 import java.util.Date;

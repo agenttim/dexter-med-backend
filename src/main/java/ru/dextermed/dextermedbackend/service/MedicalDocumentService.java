@@ -40,9 +40,27 @@ public class MedicalDocumentService {
         return medicalDocumentRepository.findById(id).orElse(null);
     }
 
-    public MedicalDocument createMedicalDocument(MedicalDocument medicalDocument) {
-        return medicalDocumentRepository.save(medicalDocument);
+    public MedicalDocument createMedicalDocument(MedicalDocument medicalDocument, Principal principal) {
+        // Получение имени пользователя из аутентификации
+        String username = principal.getName();
+
+        // Получение пользователя по имени пользователя
+        Optional<User> userOptional = userRepository.findByUsername(username);
+
+        if (userOptional.isPresent()) {
+            User user = userOptional.get();
+
+            // Установка пользователя как владельца медицинского документа
+            medicalDocument.setUserId(user.getId());
+
+            // Сохранение медицинского документа в базе данных
+            return medicalDocumentRepository.save(medicalDocument);
+        } else {
+            // Если пользователя не найдено, можно бросить исключение или вернуть null
+            throw new RuntimeException("Пользователь не найден");
+        }
     }
+
 
     public MedicalDocument updateMedicalDocument(Long id, MedicalDocument updatedDocument) {
         return medicalDocumentRepository.findById(id)

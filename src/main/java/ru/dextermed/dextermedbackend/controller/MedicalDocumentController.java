@@ -39,8 +39,8 @@ public class MedicalDocumentController {
     }
 
     @PostMapping
-    public ResponseEntity<MedicalDocument> createMedicalDocument(@RequestBody MedicalDocument medicalDocument) {
-        MedicalDocument createdDocument = medicalDocumentService.createMedicalDocument(medicalDocument);
+    public ResponseEntity<MedicalDocument> createMedicalDocument(@RequestBody MedicalDocument medicalDocument, Principal principal) {
+        MedicalDocument createdDocument = medicalDocumentService.createMedicalDocument(medicalDocument, principal);
         return new ResponseEntity<>(createdDocument, HttpStatus.CREATED);
     }
 

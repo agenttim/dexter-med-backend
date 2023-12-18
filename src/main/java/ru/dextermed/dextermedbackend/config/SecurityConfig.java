@@ -41,6 +41,7 @@ public class SecurityConfig {
                 .authorizeRequests()
                 .antMatchers("/secured").authenticated()
                 .antMatchers("/info").authenticated()
+                .antMatchers("/api/medical-documents/**").authenticated()
                 .antMatchers("/admin").hasRole("ADMIN")
                 .anyRequest().permitAll()
                 .and()

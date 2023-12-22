@@ -23,8 +23,8 @@ public class TextExtractorService {
 
     private final ITesseract tess;
 
-    @Value("${cache.path}")
-    private String cachePath;
+    //@Value("${cache.path}")
+    //private String cachePath;
 
     public TextExtractorService() {
         this.tess = new Tesseract();
@@ -89,7 +89,7 @@ public class TextExtractorService {
             List<String> results = new ArrayList<>();
 
             for (int page = 0; page < document.getNumberOfPages(); ++page) {
-                BufferedImage bim = pdfRenderer.renderImageWithDPI(page, 600, ImageType.BINARY);
+                BufferedImage bim = pdfRenderer.renderImageWithDPI(page, 300, ImageType.RGB);
                 String imagePath = cachePath + "/page_" + (page + 1) + ".png";
                 ImageIO.write(bim, "png", new File(imagePath));
                 String extractedText = tess.doOCR(bim);

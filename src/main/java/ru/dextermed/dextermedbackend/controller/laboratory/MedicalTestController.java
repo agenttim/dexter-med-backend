@@ -41,7 +41,7 @@ public class MedicalTestController {
             }
 
             // Вызов метода для обработки и сохранения медицинских тестов
-            medicalTestService.extractMedicalTestResults(medicalTestsDocument.getJsonData());
+            medicalTestService.processAndSaveMedicalTests(medicalTestsDocument, 1L);
 
             return new ResponseEntity<>("Медицинские тесты успешно обработаны", HttpStatus.OK);
         } catch (Exception e) {
@@ -49,10 +49,23 @@ public class MedicalTestController {
         }
     }
 
-/*    @GetMapping("/process/{documentId}")
-    public String processMedicalTest(@PathVariable Long documentId) {
-        MedicalTestsDocument medicalTestsDocument = medicalTestDocumentService.getMedicalTestsDocumentById(documentId);
-        return medicalTestsDocument.getDocumentName();
-    }*/
+    @GetMapping("/process2/{documentId}")
+    public ResponseEntity<String> process2MedicalTest(@PathVariable Long documentId) {
+        try {
+            // Получение MedicalTestsDocument из БД по id
+            MedicalTestsDocument medicalTestsDocument = medicalTestDocumentService.getMedicalTestsDocumentById(documentId);
+
+            if (medicalTestsDocument == null) {
+                return new ResponseEntity<>("Документ не найден", HttpStatus.NOT_FOUND);
+            }
+
+            // Вызов метода для обработки и сохранения медицинских тестов
+
+
+            return new ResponseEntity<>(medicalTestService.extractMedicalTestResults(medicalTestsDocument.getJsonData()).toString(), HttpStatus.OK);
+        } catch (Exception e) {
+            return new ResponseEntity<>("Произошла ошибка при обработке медицинских тестов", HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+    }
 }
 

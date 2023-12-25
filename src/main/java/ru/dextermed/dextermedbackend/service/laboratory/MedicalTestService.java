@@ -12,9 +12,7 @@ import ru.dextermed.dextermedbackend.repository.laboratory.MedicalTestResultRepo
 import ru.dextermed.dextermedbackend.repository.laboratory.MedicalTestsDocumentRepository;
 
 import java.io.IOException;
-import java.util.HashMap;
-import java.util.Iterator;
-import java.util.Map;
+import java.util.*;
 
 @Service
 @Data
@@ -25,26 +23,56 @@ public class MedicalTestService {
     private final MedicalTestRepository medicalTestRepository;
 
 
-    public void processAndSaveMedicalTests(MedicalTestsDocument medicalTestsDocument) {
-        // Парсинг json_data для поиска ключевых слов
+    public void processAndSaveMedicalTests(MedicalTestsDocument medicalTestsDocument, Long medicalTestId) {
+
+        MedicalTest medicalTest = medicalTestRepository.findById(medicalTestId)
+                .orElseThrow(() -> new IllegalArgumentException("Анализ не найден!"));
+
         String jsonData = medicalTestsDocument.getJsonData();
-        // Здесь используй свой код для извлечения данных из json_data
 
-        // Пример: Предположим, что у тебя есть метод extractMedicalTestResults(jsonData),
-        // который возвращает Map<String, String> с ключами-кодами анализов и их значениями.
+        Map<String, String> results = extractMedicalTestResults(jsonData);
 
-        Map<String, String> medicalTestResults = extractMedicalTestResults(jsonData);
+        // Получаем ключевые слова в виде строки
+        String keywords = medicalTest.getKeywords();
 
-        // Сохранение результатов в MedicalTestResult
-        for (Map.Entry<String, String> entry : medicalTestResults.entrySet()) {
+        for (Map.Entry<String, String> entry : results.entrySet()) {
+
             String keyword = entry.getKey();
             String result = entry.getValue();
 
-            // Поиск соответствующего анализа по ключевому слову
-            MedicalTest medicalTest = medicalTestRepository.findByKeywordsContaining(keyword);
+            System.out.println("Сравниваем ключевые слова: " + keywords);
+            System.out.println("с ключевым словом: " + keyword);
 
-            if (medicalTest != null) {
-                // Создание и сохранение записи результата анализа
+            boolean match = false;
+
+            for (String part : keyword.split("_")) {
+
+                System.out.println("Проверяем часть: " + part);
+
+                // Сравниваем каждое ключевое слово
+                for (String key : keywords.split(", ")) {
+
+                    System.out.println("Сравниваем: " + key + " и " + part);
+
+                    if (key.equalsIgnoreCase(part) || part.contains(key)) {
+                        match = true;
+                        System.out.println("Найдено совпадение!");
+                        break;
+                    }
+
+                }
+
+                if (match) {
+                    break;
+                }
+
+            }
+
+            if (!match) {
+                System.out.println("Совпадений не найдено");
+            }
+
+            if (match) {
                 MedicalTestResult medicalTestResult = new MedicalTestResult();
                 medicalTestResult.setMedicalTest(medicalTest);
                 medicalTestResult.setResult(result);
@@ -52,8 +80,11 @@ public class MedicalTestService {
 
                 medicalTestResultRepository.save(medicalTestResult);
             }
+
         }
     }
+
+
 
     public Map<String, String> extractMedicalTestResults(String jsonData) {
         Map<String, String> medicalTestResults = new HashMap<>();
@@ -85,8 +116,6 @@ public class MedicalTestService {
 
         return medicalTestResults;
     }
-
-
 
 
     // Другие методы сервиса, если необходимо

@@ -18,10 +18,9 @@ public class MedicalTest {
     @Column(name = "name")
     private String name;
 
-    @ElementCollection
     @CollectionTable(name = "medical_test", joinColumns = @JoinColumn(name = "id"))
     @Column(name = "keywords")
-    private Set<String> keywords;
+    private String keywords;
 
     // Далее следует ваш код
 }

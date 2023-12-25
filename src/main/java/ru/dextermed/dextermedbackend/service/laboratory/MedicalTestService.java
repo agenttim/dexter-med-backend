@@ -62,13 +62,21 @@ public class MedicalTestService {
             ObjectMapper objectMapper = new ObjectMapper();
             JsonNode jsonNode = objectMapper.readTree(jsonData);
 
-            Iterator<Map.Entry<String, JsonNode>> fields = jsonNode.fields();
-            while (fields.hasNext()) {
-                Map.Entry<String, JsonNode> entry = fields.next();
-                String analysisCode = entry.getKey();
-                String result = entry.getValue().asText();
+            Iterator<Map.Entry<String, JsonNode>> tests = jsonNode.fields();
+            while (tests.hasNext()) {
+                Map.Entry<String, JsonNode> test = tests.next();
+                String testName = test.getKey();
+                JsonNode indicatorsNode = test.getValue();
 
-                medicalTestResults.put(analysisCode, result);
+                Iterator<JsonNode> indicators = indicatorsNode.elements();
+                while (indicators.hasNext()) {
+                    JsonNode indicator = indicators.next();
+                    String indicatorName = indicator.get("indicator").asText();
+                    String value = indicator.get("value").asText();
+
+                    String key = testName + "_" + indicatorName;
+                    medicalTestResults.put(key, value);
+                }
             }
 
         } catch (IOException e) {
@@ -77,6 +85,9 @@ public class MedicalTestService {
 
         return medicalTestResults;
     }
+
+
+
 
     // Другие методы сервиса, если необходимо
 }

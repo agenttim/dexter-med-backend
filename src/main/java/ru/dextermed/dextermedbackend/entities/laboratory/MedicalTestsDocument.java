@@ -24,7 +24,6 @@ public class MedicalTestsDocument {
     @Column(name = "creation_date")
     private Date creationDate; // Дата создания документа
 
-    @Lob
     @Column(name = "json_data", columnDefinition = "TEXT") // Изменено имя поля на json_data
     private String jsonData; // Данные в формате JSON, сформированные с помощью ИИ
 

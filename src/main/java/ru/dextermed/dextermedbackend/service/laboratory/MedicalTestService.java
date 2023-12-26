@@ -22,6 +22,8 @@ public class MedicalTestService {
     private final MedicalTestResultRepository medicalTestResultRepository;
     private final MedicalTestRepository medicalTestRepository;
 
+    Map<String, String> medicalTestResults = new HashMap<>();
+
 
     public void processAndSaveMedicalTests(MedicalTestsDocument medicalTestsDocument, Long medicalTestId) {
 
@@ -85,39 +87,30 @@ public class MedicalTestService {
     }
 
 
-
     public Map<String, String> extractMedicalTestResults(String jsonData) {
-        Map<String, String> medicalTestResults = new HashMap<>();
 
         try {
             ObjectMapper objectMapper = new ObjectMapper();
-            JsonNode jsonNode = objectMapper.readTree(jsonData);
+            JsonNode indicatorNode = objectMapper.readTree(jsonData);
 
-            Iterator<Map.Entry<String, JsonNode>> tests = jsonNode.fields();
-            while (tests.hasNext()) {
-                Map.Entry<String, JsonNode> test = tests.next();
-                String testName = test.getKey();
-                JsonNode indicatorsNode = test.getValue();
-
-                Iterator<JsonNode> indicators = indicatorsNode.elements();
-                while (indicators.hasNext()) {
-                    JsonNode indicator = indicators.next();
-                    String indicatorName = indicator.get("indicator").asText();
-                    String value = indicator.get("value").asText();
-
-                    String key = testName + "_" + indicatorName;
-                    medicalTestResults.put(key, value);
+            for (JsonNode element : indicatorNode) {
+                if (element.has("indicator") && element.has("value")) {
+                    String indicator = element.get("indicator").asText();
+                    String value = element.get("value").asText();
+                    medicalTestResults.put(indicator, value);
+                }
+                if (element.isArray()) {
+                    extractMedicalTestResults(element.toString());
                 }
             }
 
         } catch (IOException e) {
-            e.printStackTrace(); // Обработай исключение в соответствии с твоими потребностями
+            e.printStackTrace();
         }
 
         return medicalTestResults;
     }
 
 
-    // Другие методы сервиса, если необходимо
 }
 

@@ -34,55 +34,25 @@ public class MedicalTestService {
 
         Map<String, String> results = extractMedicalTestResults(jsonData);
 
-        // Получаем ключевые слова в виде строки
-        String keywords = medicalTest.getKeywords();
+        String[] searchWords = medicalTest.getKeywords().split(", ");
 
-        for (Map.Entry<String, String> entry : results.entrySet()) {
+        for (String word : searchWords) {
+            //System.out.println(word);
+            for (Map.Entry<String, String> entry : results.entrySet()) {
+                //System.out.println(word);
+                //System.out.println(entry.getKey());
+                if (word.toLowerCase().contains(entry.getKey().toLowerCase())) {
+                    System.out.println("Совпадение");
+                    MedicalTestResult medicalTestResult = new MedicalTestResult();
+                    medicalTestResult.setMedicalTest(medicalTest);
+                    medicalTestResult.setResult(entry.getValue());
+                    medicalTestResult.setMedicalTestsDocument(medicalTestsDocument);
 
-            String keyword = entry.getKey();
-            String result = entry.getValue();
-
-            System.out.println("Сравниваем ключевые слова: " + keywords);
-            System.out.println("с ключевым словом: " + keyword);
-
-            boolean match = false;
-
-            for (String part : keyword.split("_")) {
-
-                System.out.println("Проверяем часть: " + part);
-
-                // Сравниваем каждое ключевое слово
-                for (String key : keywords.split(", ")) {
-
-                    System.out.println("Сравниваем: " + key + " и " + part);
-
-                    if (key.equalsIgnoreCase(part) || part.contains(key)) {
-                        match = true;
-                        System.out.println("Найдено совпадение!");
-                        break;
-                    }
-
+                    medicalTestResultRepository.save(medicalTestResult);
+                    return;
                 }
-
-                if (match) {
-                    break;
-                }
-
+                //System.out.println();
             }
-
-            if (!match) {
-                System.out.println("Совпадений не найдено");
-            }
-
-            if (match) {
-                MedicalTestResult medicalTestResult = new MedicalTestResult();
-                medicalTestResult.setMedicalTest(medicalTest);
-                medicalTestResult.setResult(result);
-                medicalTestResult.setMedicalTestsDocument(medicalTestsDocument);
-
-                medicalTestResultRepository.save(medicalTestResult);
-            }
-
         }
     }
 

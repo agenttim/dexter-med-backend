@@ -5,7 +5,6 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import ru.dextermed.dextermedbackend.entities.laboratory.MedicalTestsDocument;
-import ru.dextermed.dextermedbackend.repository.laboratory.MedicalTestsDocumentRepository;
 import ru.dextermed.dextermedbackend.service.laboratory.MedicalTestDocumentService;
 import ru.dextermed.dextermedbackend.service.laboratory.MedicalTestService;
 
